@@ -1,0 +1,130 @@
+<link rel="stylesheet" href="../css/book-list.css">
+<!-- <link rel="stylesheet" href="../css/main.css"> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+
+    <header class="header-area overlay">
+        <nav class="navbar navbar-expand-md navbar-dark">
+            <div class="container">
+                <a href="#" class="navbar-brand">Book-active</a>
+
+                <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#main-nav">
+                    <span class="menu-icon-bar"></span>
+                    <span class="menu-icon-bar"></span>
+                    <span class="menu-icon-bar"></span>
+                </button>
+
+                <div id="main-nav" class="collapse navbar-collapse">
+                    <ul class="navbar-nav ml-auto" id="navbar">
+
+
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="banner">
+            <div class="container">
+                <h1>Đi một ngày đàng, học một sàng khôn</h1>
+                <p>Có thể bạn không đi, nhưng bạn có thể đọc mà</p>
+
+            </div>
+        </div>
+    </header>
+
+    <main id="content">
+        <div class="wraper">
+
+
+        </div>
+    </main>
+
+    <script src="../script/book-list.js"></script>
+
+    <script>
+        // for navigation
+        const navbar = document.querySelector("#navbar");
+        const navBarObj = {
+            id: null,
+            name: null,
+            renderLi: function() {
+                navbar.innerHTML += `<li class="nav-item nav-link active">${this.name}</li>`
+            }
+        }
+
+
+        let urlCat = "http://localhost:3000/catagories";
+        fetch(urlCat)
+            .then((res) => {
+                return res.json();
+            })
+            .then(navData => {
+                navData.forEach(e => {
+                    let newObj = {
+                        __proto__: navBarObj
+                    }
+                    newObj.name = e.name;
+                    newObj.renderLi();
+                })
+            });
+
+        // for books
+        const wrapper = document.querySelector(".wraper");
+        const bookObj = {
+            id: null,
+            title: null,
+            price: null,
+            image: null,
+            renderLi: function() {
+                wrapper.innerHTML += `
+
+                <div class="book-item">
+                    <div class="image">
+                        <img src="../images/${this.image}" alt="${this.title}">
+                    </div>
+                    <p class="title">
+                        ${this.title}
+                    </p>
+                    <span class="price">${this.price} vnd</span>
+                    <a href="/shop/<%=b.id%>">Xem chi tiết</a>
+                </div>
+                
+                `
+            }
+        }
+
+
+        let urlBooks = "http://localhost:3000/books";
+
+        fetch(urlBooks)
+            .then((res) => {
+                return res.json();
+            })
+            .then(data => {
+                if (data == []) {
+                    wrapper.innerHTML = `
+                <h2>Danh sách trống!</h2>
+                `;
+                } else {
+
+                    data.forEach(e => {
+                        let newObj = {
+                            __proto__: bookObj
+                        }
+                        newObj.title = e.title;
+                        newObj.price = e.price;
+                        newObj.image = e.image;
+                        newObj.id = e.id;
+
+                        newObj.renderLi();
+                    })
+                }
+            });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 4</title>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.css" rel="stylesheet" />
+    <style>
+        img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .message {
+            text-align: center;
+            color: rgb(214, 15, 15);
+        }
+    </style>
+</head>
+
+<body>
+    <section class="" style="background-color: #eee;min-height: 100vh;">
+        <div class="container py-5">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col col-lg-12 col-xl-12">
+                    <div class="card rounded-3">
+                        <div class="card-body p-4">
+
+                            <h6><a href="../index.html">Back to home</a></h6>
+                            <h4 class="text-center my-3 pb-3">PERSON</h4>
+                            <p class="message"></p>
+                            <form id="form-person" class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+                                <div class="col-12">
+                                    <div class="form-check" id="person1">
+                                        <label for="">Person 1</label>
+                                        <input type="text" class="form-control add-tast-input name" autocomplete="off" placeholder="Name" id="name" />
+                                        <input style="margin-top:5px" type="text" class="form-control add-tast-input age" autocomplete="off" placeholder="Age" />
+                                        <input style="margin-top:5px" type="text" class="form-control add-tast-input address" autocomplete="off" placeholder="Address" />
+
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check" id="person2">
+                                        <label for="">Person 2</label>
+                                        <input type="text" class="form-control add-tast-input name" autocomplete="off" placeholder="Name" id="name" />
+
+                                        <input style="margin-top:5px" type="text" class="form-control add-tast-input age" autocomplete="off" placeholder="Age" />
+                                        <input style="margin-top:5px" type="text" class="form-control add-tast-input address" autocomplete="off" placeholder="Address" />
+
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary add-task-btn" id="add-btn">Add</button>
+                                </div>
+
+                            </form>
+                            <table class="table mb-4">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th scope="col">Full Name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <script>
+        const tbody = document.querySelector("#tbody");
+
+        const Person = {
+            name: "",
+            age: null,
+            address: null,
+            showProfile: function() {
+                tbody.innerHTML += `<tr>
+
+                        <td>${this.personId}</td>
+                        <td>${this.name}</td>
+                        <td>${this.age}</td>
+                        <td>${this.address}</td>
+                    </tr>`
+            }
+        }
+
+        const Person1 = {
+            __proto__: Person,
+            personId: 1
+        }
+
+        const Person2 = {
+            __proto__: Person,
+            personId: 2
+        }
+    </script>
+
+    <script>
+        const addBtn = document.querySelector("#add-btn");
+        const inputFields = document.querySelectorAll("#form-person input")
+        const message = document.querySelector(".message");
+        // require value in input
+        const validateInput = () => {
+            let check = true;
+            for (let i = 0; i < inputFields.length; i++) {
+                if (inputFields[i].value === "") {
+                    check = false;
+                    break;
+                }
+            }
+            return check;
+
+        }
+
+        addBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            tbody.innerHTML = "";
+            message.innerHTML = "";
+
+            if (validateInput()) {
+                Person1.name = inputFields[0].value;
+                Person1.age = inputFields[1].value;
+                Person1.address = inputFields[2].value;
+
+                Person1.showProfile();
+
+                Person2.name = inputFields[3].value;
+                Person2.age = inputFields[4].value;
+                Person2.address = inputFields[5].value;
+
+                Person2.showProfile();
+
+            } else {
+                message.innerHTML = "Vui lòng nhập đủ thông tin!";
+            }
+
+        })
+    </script>
+</body>
+
+</html>

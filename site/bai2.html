@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 4</title>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.css" rel="stylesheet" />
+    <style>
+        img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="" style="background-color: #eee;min-height: 100vh;">
+        <div class="container py-5">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col col-lg-12 col-xl-12">
+                    <div class="card rounded-3">
+                        <div class="card-body p-4">
+
+                            <h6><a href="../index.html">Back to home</a></h6>
+                            <h4 class="text-center my-3 pb-3">Student's Information</h4>
+
+                            <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input type="text" class="form-control add-tast-input" autocomplete="off" placeholder="Weight (Kg)" id="weight" />
+
+                                        <input style="margin-top:5px" type="text" class="form-control add-tast-input" autocomplete="off" placeholder="Height (m)" id="height" />
+
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary add-task-btn" id="add-btn">GET BMI</button>
+                                </div>
+
+
+                            </form>
+
+                            <table class="table mb-4" id="table-body">
+                                <thead>
+                                    <tr>
+
+                                        <th scope="col">Avatar</th>
+                                        <th scope="col">Full Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Department</th>
+                                        <th scope="col">Average Score</th>
+                                        <th scope="col">Address</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-1">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <script>
+        const student = {
+            id: 1,
+            fullName: "Đinh Hoàng Duy",
+            email: "duydh.florentino@gmail.com",
+            avatar: "https://scontent.fdad3-2.fna.fbcdn.net/v/t39.30808-6/263796499_632983774493470_7144666697427452113_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=A8eNSS09NJ8AX9yxiXS&_nc_ht=scontent.fdad3-2.fna&oh=00_AT_mvr5KjdHdOC3C_nnUxGvORYZqWs002mXABSo_YNovdw&oe=61E2EC80",
+            address: "Khánh Hòa",
+            department: "Front end web development",
+            subjects: [],
+            BMI: "Not set yet",
+
+            setBMI: (weight, height, cb) => {
+                weight = parseFloat(weight);
+                height = parseFloat(height);
+                fetch(`https://body-mass-index-bmi-calculator.p.rapidapi.com/metric?weight=${weight}}&height=${height}}`, {
+                        "method": "GET",
+                        "headers": {
+                            "x-rapidapi-host": "body-mass-index-bmi-calculator.p.rapidapi.com",
+                            "x-rapidapi-key": "df30cf7729msh704158e03f8fd3fp167eacjsn855cd9d25a60"
+                        }
+                    })
+                    .then(response => {
+                        console.log(response);
+                        this.BMI = response.bmi;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+
+            },
+            changeAddress: (address) => {
+                student.address = address;
+            }
+        }
+    </script>
+
+    <script>
+        const tbody1 = document.querySelector('#tbody-1');
+        const tbody2 = document.querySelector('#tbody-2');
+        const renderData = () => {
+            let data = `
+        <tr>
+            <td><img src="${student.avatar}" alt="avatar"></td>
+            <td>${student.fullName}</td>
+            <td>${student.email}</td>
+            <td>${student.department}</td>
+            <td>${student.BMI}</td>
+            <td>${student.address}</td>
+        </tr>
+        `;
+            let data2 = '';
+            tbody1.innerHTML = data;
+            student.subjects.forEach(e => {
+                data2 += `
+            <tr>
+                <td>${e.name}</td>
+                <td>${e.point}</td>
+            </tr>
+        `;
+            })
+
+        }
+        renderData();
+
+        //  add new
+        const addBtn = document.querySelector("#add-btn");
+        const nameField = document.querySelector("#weight");
+        const pointField = document.querySelector("#height");
+
+        addBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            student.setBMI(nameField.value, pointField.value);
+            renderData();
+        })
+    </script>
+</body>
+
+</html>
