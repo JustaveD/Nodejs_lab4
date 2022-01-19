@@ -89,7 +89,7 @@
             setBMI: (weight, height, cb) => {
                 weight = parseFloat(weight);
                 height = parseFloat(height);
-                fetch(`https://body-mass-index-bmi-calculator.p.rapidapi.com/metric?weight=${weight}}&height=${height}}`, {
+                fetch(`https://body-mass-index-bmi-calculator.p.rapidapi.com/metric?weight=${weight}&height=${height}}`, {
                         "method": "GET",
                         "headers": {
                             "x-rapidapi-host": "body-mass-index-bmi-calculator.p.rapidapi.com",
