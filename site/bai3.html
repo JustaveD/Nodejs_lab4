@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 4</title>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.css" rel="stylesheet" />
+    <style>
+        img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="" style="background-color: #eee;min-height: 100vh;">
+        <div class="container py-5">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col col-lg-12 col-xl-12">
+                    <div class="card rounded-3">
+                        <div class="card-body p-4">
+
+                            <h6><a href="../index.html">Back to home</a></h6>
+                            <h4 class="text-center my-3 pb-3">Student's Information</h4>
+
+                            <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input type="text" class="form-control add-tast-input" autocomplete="off" placeholder="Name" id="name" />
+
+                                        <input style="margin-top:5px" type="text" class="form-control add-tast-input" autocomplete="off" placeholder="Age" id="age" />
+
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary add-task-btn" id="add-btn">Add</button>
+                                </div>
+
+
+                            </form>
+                            <button type="submit" class="btn btn-primary add-task-btn" id="sort-by-name">Sort by Name</button>
+                            <button type="submit" class="btn btn-primary add-task-btn" id="sort-by-age">Sort by age</button>
+
+                            <table class="table mb-4" id="table-body">
+                                <thead>
+                                    <tr>
+
+                                        <th scope="col">No.</th>
+                                        <th scope="col">Full Name</th>
+                                        <th scope="col">Age</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <script>
+        const tbody = document.querySelector("#tbody");
+        const addBtn = document.querySelector("#add-btn");
+        const nameField = document.querySelector("#name");
+        const ageField = document.querySelector("#age");
+
+
+        const sortByNameBtn = document.querySelector("#sort-by-name");
+        const sortByAgeBtn = document.querySelector("#sort-by-age");
+
+        let data = '';
+
+        const studentList = [{
+            name: "An",
+            age: 18
+        }, {
+            name: "Danh",
+            age: 24
+        }, {
+            name: "Linh",
+            age: 18
+        }, {
+            name: "Oanh",
+            age: 19
+        }, {
+            name: "Sang",
+            age: 18
+        }, {
+            name: "Duy",
+            age: 18
+        }, ];
+
+        const renderList = list => {
+            data = "";
+            list.forEach((e, i) => {
+                data += `
+                    <tr>
+                        <td>${i+1}</td>    
+                        <td>${e.name}</td>    
+                        <td>${e.age}</td>    
+                    </tr>
+                `;
+            })
+
+            tbody.innerHTML = data;
+        }
+        const sortByName = () => {
+            return studentList.sort((a, b) => {
+                if (a.name > b.name) return 1;
+                if (a.name < b.name) return -1;
+            })
+        }
+        const sortByAge = () => {
+            return studentList.sort((a, b) => a.age - b.age)
+        }
+        addBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            let newStudent = {
+                name: nameField.value,
+                age: parseInt(ageField.value)
+            };
+            if (nameField.value.length == 0 || ageField.value.length == 0) return;
+
+            studentList.push(newStudent);
+
+            let sortList = sortByName();
+
+            renderList(sortList);
+
+            nameField.value = "";
+            ageField.value = "";
+        })
+
+        sortByNameBtn.addEventListener("click", function() {
+            let sortList = sortByName();
+            renderList(sortList);
+        })
+        sortByAgeBtn.addEventListener("click", function() {
+            let sortList = sortByAge();
+            renderList(sortList);
+        })
+        renderList(studentList);
+    </script>
+</body>
+
+</html>
