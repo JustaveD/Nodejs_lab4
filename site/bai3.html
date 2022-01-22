@@ -120,41 +120,50 @@
 
             tbody.innerHTML = data;
         }
-        const sortByName = () => {
-            return studentList.sort((a, b) => {
+        const sortByName = (cb) => {
+            let list = studentList.sort((a, b) => {
                 if (a.name > b.name) return 1;
                 if (a.name < b.name) return -1;
             })
-        }
-        const sortByAge = () => {
-            return studentList.sort((a, b) => a.age - b.age)
-        }
-        addBtn.addEventListener("click", function(e) {
-            e.preventDefault();
+            cb(list);
 
+        }
+        const sortByAge = (cb) => {
+            let list = studentList.sort((a, b) => a.age - b.age);
+
+            cb(list);
+        }
+
+        const checkAndAddNewStudent = () => {
             let newStudent = {
                 name: nameField.value,
                 age: parseInt(ageField.value)
             };
-            if (nameField.value.length == 0 || ageField.value.length == 0) return;
+            if (nameField.value.length == 0 || ageField.value.length == 0) return false;
+            else {
+                studentList.push(newStudent);
+                return true;
+            }
+        }
 
-            studentList.push(newStudent);
+        addBtn.addEventListener("click", function(e) {
+            e.preventDefault();
 
-            let sortList = sortByName();
-
-            renderList(sortList);
+            if (!checkAndAddNewStudent()) {
+                return;
+            }
+            sortByName(renderList);
 
             nameField.value = "";
             ageField.value = "";
         })
 
         sortByNameBtn.addEventListener("click", function() {
-            let sortList = sortByName();
-            renderList(sortList);
+            sortByName(renderList);
         })
+
         sortByAgeBtn.addEventListener("click", function() {
-            let sortList = sortByAge();
-            renderList(sortList);
+            sortByAge(renderList);
         })
         renderList(studentList);
     </script>

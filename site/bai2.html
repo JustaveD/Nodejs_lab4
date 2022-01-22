@@ -35,7 +35,24 @@
 
 
     </div>
-    <script src="../script/bai2.js"></script>
+    <script>
+        const applyTheChange = (randomColor) => {
+
+            document.querySelector(".container").style.backgroundColor = randomColor;
+        }
+
+        const getColor = cb => {
+            let randomHex = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+            setTimeout(function() {
+                cb(randomHex);
+            }, 1000);
+        }
+
+        document.querySelector("h2").addEventListener("click", function() {
+            getColor(applyTheChange);
+        });
+    </script>
 </body>
 
 </html>
